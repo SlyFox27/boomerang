@@ -27,8 +27,24 @@ class Hero {
   }
 
   die() {
+    this.lives -= 1;
+
+    //console.log('YOU ARE DEAD!💀');
+  }
+  addScores() {
+    this.scores += 10;
+  }
+  win() {
+    //console.clear();
+    console.log('YOU WIN!💀');
+    console.log(`Your scores: ${this.scores}`);
+    process.exit();
+  }
+  lose() {
+    // console.clear();
     this.skin = '💀';
     console.log('YOU ARE DEAD!💀');
+    console.log(`Your scores: ${this.scores}`);
     process.exit();
   }
 }
