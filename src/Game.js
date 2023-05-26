@@ -1,4 +1,5 @@
 // Импортируем всё необходимое.
+const readlineSync = require('readline-sync');
 // Или можно не импортировать,
 // а передавать все нужные объекты прямо из run.js при инициализации new Game().
 
@@ -28,7 +29,10 @@ class Game {
     this.track = new Array(this.trackLength).fill(' ');
     this.track[this.hero.position] = this.hero.skin;
     this.track[this.enemy.position] = this.enemy.skin; // Добавьте эту строку
-    if (this.hero.boomerang.position >= 0 && this.hero.boomerang.position < this.trackLength) {
+    if (
+      this.hero.boomerang.position >= 0 &&
+      this.hero.boomerang.position < this.trackLength
+    ) {
       this.track[this.hero.boomerang.position] = this.hero.boomerang.skin;
     }
   }
@@ -40,6 +44,22 @@ class Game {
   }
 
   play() {
+    function registratePlayer() {
+      let playerName = readlineSync.question(
+        'Здравствуйте! Введите ваше имя: '
+      );
+      process.stdin.resume();
+      if (!playerName) {
+        playerName = 'Player';
+      }
+
+      const newHero = new Hero({ playerName });
+      console.log(newHero.playerName);
+
+      // console.log(Hero.name);
+    }
+    registratePlayer();
+
     setInterval(() => {
       // Let's play!
       this.handleCollisions();

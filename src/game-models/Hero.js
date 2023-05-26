@@ -1,7 +1,10 @@
 // Наш герой.
 
 class Hero {
-  constructor({ position, boomerang }) {
+  constructor({ playerName, lives = 0, scores = 0, position, boomerang }) {
+    this.playerName = playerName;
+    this.lives = lives;
+    this.score = scores;
     this.skin = '🤠';
     this.position = position;
     this.boomerang = boomerang;
