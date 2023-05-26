@@ -55,8 +55,6 @@ class Game {
 
       const newHero = new Hero({ playerName });
       console.log(newHero.playerName);
-
-      // console.log(Hero.name);
     }
     registratePlayer();
 
