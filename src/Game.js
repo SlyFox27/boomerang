@@ -5,13 +5,13 @@ const readlineSync = require('readline-sync');
 
 const Hero = require('./game-models/Hero');
 const Enemy = require('./game-models/Enemy');
-// const Boomerang = require('./game-models/Boomerang');
 const View = require('./View');
 const Boomerang = require('./game-models/Boomerang');
 
 // Основной класс игры.
 // Тут будут все настройки, проверки, запуск.
 let playerName = '';
+
 class Game {
   constructor({ trackLength }) {
     this.trackLength = trackLength;
@@ -49,9 +49,7 @@ class Game {
 
   play() {
     function registratePlayer() {
-       playerName = readlineSync.question(
-        'Hello!!! Please enter your name: '
-      );
+      playerName = readlineSync.question('Hello!!! Please enter your name: ');
       process.stdin.resume();
 
       return playerName;
@@ -88,14 +86,9 @@ class Game {
 
     if (this.boomerang.position === this.enemy.position) {
       this.enemy.die();
-      // this.enemy.die();
-      // this.hero.addScores();
-      // this.hero.scores += 10;
-      // if (this.hero.lives >= 20) {
 
-      // }
       this.hero.addScores();
-      if (this.hero.scores >= 20) {
+      if (this.hero.scores >= 100) {
         this.hero.win();
       }
       // Обнуляем позицию бумеранга после столкновения с врагом
