@@ -16,7 +16,11 @@ class Game {
   constructor({ trackLength }) {
     this.trackLength = trackLength;
     this.boomerang = new Boomerang(trackLength);
-    this.hero = new Hero({ position: 0, boomerang: this.boomerang });
+    this.hero = new Hero({
+      playerName: 'Player',
+      position: 0,
+      boomerang: this.boomerang,
+    });
     this.enemy = new Enemy(trackLength);
     this.view = new View(this);
     this.track = [];
@@ -45,18 +49,15 @@ class Game {
 
   play() {
     function registratePlayer() {
-      let playerName = readlineSync.question(
+      const playerName = readlineSync.question(
         'Здравствуйте! Введите ваше имя: '
       );
       process.stdin.resume();
-      if (!playerName) {
-        playerName = 'Player';
-      }
 
-      const newHero = new Hero({ playerName });
-      console.log(newHero.playerName);
+      return playerName;
     }
-    registratePlayer();
+
+    this.hero.name = registratePlayer();
 
     setInterval(() => {
       // Let's play!
