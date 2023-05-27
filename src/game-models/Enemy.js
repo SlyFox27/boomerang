@@ -1,4 +1,5 @@
 // Враг.
+const Hero = require('./Hero');
 
 class Enemy {
   constructor(trackLength) {
@@ -7,7 +8,19 @@ class Enemy {
   }
 
   generateSkin() {
-    const skins = ['👾', '💀', '👹', '👻', '👽', '👿', '💩', '🤡', '🤺', '🧛', '🧟', '🎃'];
+    const skins = [
+      '🧌',
+      '🧛',
+      '👹',
+      '👻',
+      '🧛',
+      '👿',
+      '🧛',
+      '🤺',
+      '🧛',
+      '🧟',
+      '🎃',
+    ];
     this.skin = skins[Math.floor(Math.random() * skins.length)];
   }
 
@@ -21,5 +34,4 @@ class Enemy {
     console.log('Enemy is dead!');
   }
 }
-
 module.exports = Enemy;
