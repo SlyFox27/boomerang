@@ -11,13 +11,13 @@ const Boomerang = require('./game-models/Boomerang');
 
 // Основной класс игры.
 // Тут будут все настройки, проверки, запуск.
-
+let playerName = '';
 class Game {
   constructor({ trackLength }) {
     this.trackLength = trackLength;
     this.boomerang = new Boomerang(trackLength);
     this.hero = new Hero({
-      playerName: 'Player',
+      name: playerName,
       position: 0,
       boomerang: this.boomerang,
     });
@@ -49,8 +49,8 @@ class Game {
 
   play() {
     function registratePlayer() {
-      const playerName = readlineSync.question(
-        'Здравствуйте! Введите ваше имя: '
+       playerName = readlineSync.question(
+        'Hello!!! Please enter your name: '
       );
       process.stdin.resume();
 

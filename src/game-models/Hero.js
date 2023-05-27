@@ -1,11 +1,13 @@
 // Наш герой.
 
 class Hero {
-  constructor({ playerName, lives = 3, scores = 0, position, boomerang }) {
-    this.playerName = playerName;
+  constructor({
+    name, lives = 3, scores = 0, position, boomerang,
+  }) {
+    this.name = name;
     this.lives = lives;
     this.scores = scores;
-    this.skin = '🤠';
+    this.skin = '🧔';
     this.position = position;
     this.boomerang = boomerang;
   }
@@ -29,22 +31,25 @@ class Hero {
   die() {
     this.lives -= 1;
 
-    //console.log('YOU ARE DEAD!💀');
+    // console.log('YOU ARE DEAD!💀');
   }
+
   addScores() {
     this.scores += 10;
   }
+
   win() {
-    //console.clear();
-    console.log('YOU WIN!💀');
-    console.log(`Your scores: ${this.scores}`);
+    console.clear();
+    console.log('YOU WIN!💰');
+    console.log(`Your score: ${this.scores}`);
     process.exit();
   }
+
   lose() {
-    // console.clear();
+    console.clear();
     this.skin = '💀';
     console.log('YOU ARE DEAD!💀');
-    console.log(`Your scores: ${this.scores}`);
+    console.log(`Your score: ${this.scores}`);
     process.exit();
   }
 }
