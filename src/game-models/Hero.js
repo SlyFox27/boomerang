@@ -1,9 +1,10 @@
+const logPlayers = require('../../logPlayers');
+const addPlayers = require('../../addPlayers');
+const { EOL } = require('os');
 // Наш герой.
 
 class Hero {
-  constructor({
-    name, lives = 3, scores = 0, position, boomerang,
-  }) {
+  constructor({ name = 'Geralt', lives = 3, scores = 0, position, boomerang }) {
     this.name = name;
     this.lives = lives;
     this.scores = scores;
@@ -38,18 +39,25 @@ class Hero {
     this.scores += 10;
   }
 
-  win() {
+  async win() {
     console.clear();
     console.log('YOU WIN!💰');
     console.log(`Your score: ${this.scores}`);
+    console.log(EOL);
+    await logPlayers();
+    console.log(`${EOL}Created by "CD-Project Red" with love${EOL}`);
     process.exit();
   }
 
-  lose() {
+  async lose() {
+    await addPlayers(this.name, this.scores);
     console.clear();
     this.skin = '💀';
     console.log('YOU ARE DEAD!💀');
     console.log(`Your score: ${this.scores}`);
+    console.log(EOL);
+    await logPlayers();
+    console.log(`${EOL}Created by "CD-Project Red" with love${EOL}`);
     process.exit();
   }
 }
