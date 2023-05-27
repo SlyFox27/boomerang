@@ -1,8 +1,14 @@
+const logPlayers = require('../../logPlayers');
+const addPlayers = require('../../addPlayers');
+const { EOL } = require('os');
 // Наш герой.
 
 class Hero {
-  constructor({ position, boomerang }) {
-    this.skin = '🤠';
+  constructor({ name = 'Geralt', lives = 3, scores = 0, position, boomerang }) {
+    this.name = name;
+    this.lives = lives;
+    this.scores = scores;
+    this.skin = '🧔';
     this.position = position;
     this.boomerang = boomerang;
   }
@@ -24,8 +30,34 @@ class Hero {
   }
 
   die() {
+    this.lives -= 1;
+
+    // console.log('YOU ARE DEAD!💀');
+  }
+
+  addScores() {
+    this.scores += 10;
+  }
+
+  async win() {
+    console.clear();
+    console.log('YOU WIN!💰');
+    console.log(`Your score: ${this.scores}`);
+    console.log(EOL);
+    await logPlayers();
+    console.log(`${EOL}Created by "CD-Project Red" with love${EOL}`);
+    process.exit();
+  }
+
+  async lose() {
+    await addPlayers(this.name, this.scores);
+    console.clear();
     this.skin = '💀';
     console.log('YOU ARE DEAD!💀');
+    console.log(`Your score: ${this.scores}`);
+    console.log(EOL);
+    await logPlayers();
+    console.log(`${EOL}Created by "CD-Project Red" with love${EOL}`);
     process.exit();
   }
 }
