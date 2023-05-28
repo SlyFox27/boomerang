@@ -10,7 +10,8 @@
     "pg-hstore": "^2.3.4",
     "play-sound": "^1.1.5",
     "readline-sync": "^1.4.10",
-    "sequelize": "^6.31.1"
+    "sequelize": "^6.31.1",
+    "terminal-img": "^2.0.24"
   },
   "devDependencies": {
     "eslint": "^8.18.0",

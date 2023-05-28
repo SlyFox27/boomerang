@@ -1,5 +1,7 @@
 // Импортируем всё необходимое.
+const { draw, drawAsString } = require('terminal-img');
 const readlineSync = require('readline-sync');
+const sound = require('play-sound')((opts = {}));
 // Или можно не импортировать,
 // а передавать все нужные объекты прямо из run.js при инициализации new Game().
 
@@ -47,7 +49,9 @@ class Game {
     }
   }
 
-  play() {
+  async play() {
+    await draw('readme-assets/wolf.png', { width: 80, height: 60 });
+    // process.stdin.resume();
     function registratePlayer() {
       playerName = readlineSync.question('Hello!!! Please enter your name: ');
       process.stdin.resume();
@@ -56,6 +60,9 @@ class Game {
     }
 
     this.hero.name = registratePlayer();
+    this.audio = sound.play(
+      '/Users/ilyabritvin/Documents/Elbrus Bootcamp/phase-1-repeat/week-3/day-5/core-async-boomerang/src/sounds/battleTheme.wav'
+    );
 
     setInterval(() => {
       // Let's play!
