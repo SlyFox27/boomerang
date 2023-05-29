@@ -1,4 +1,5 @@
 const { Scoreboard } = require('./db/models');
+const { EOL } = require('os');
 
 async function logPlayer() {
   const players = await Scoreboard.findAll({ raw: true, logging: false });
@@ -11,7 +12,7 @@ async function logPlayer() {
       topFivePlayers[i].Score
     }\n`;
   }
-  console.log(`TOP-5 players:\n\n${result}`);
+  console.table(`TOP-5 игроков:${EOL}${EOL}${result}`);
 }
 
 module.exports = logPlayer;

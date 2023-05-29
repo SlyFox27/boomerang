@@ -1,5 +1,5 @@
+const sound = require('play-sound')((opts = {}));
 // Враг.
-const Hero = require('./Hero');
 
 class Enemy {
   constructor(trackLength) {
@@ -30,8 +30,8 @@ class Enemy {
   }
 
   die() {
+    sound.play('src/sounds/hit.wav');
     this.position = '?';
-    console.log('Enemy is dead!');
   }
 }
 module.exports = Enemy;

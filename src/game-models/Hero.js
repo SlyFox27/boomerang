@@ -1,7 +1,4 @@
-const logPlayers = require('../../logPlayers');
-const addPlayers = require('../../addPlayers');
-const { EOL } = require('os');
-// Наш герой.
+const sound = require('play-sound')((opts = {})); // Наш герой.
 
 class Hero {
   constructor({ name = 'Geralt', lives = 3, scores = 0, position, boomerang }) {
@@ -15,7 +12,9 @@ class Hero {
 
   moveLeft() {
     // Идём влево.
-    this.position -= 1;
+    if (this.position > 0) {
+      this.position -= 1;
+    }
   }
 
   moveRight() {
@@ -25,40 +24,18 @@ class Hero {
 
   attack() {
     // Атакуем.
+    sound.play('src/sounds/attack.wav');
     this.boomerang.position = this.position + 1; // Устанавливаем начальную позицию бумеранга
     this.boomerang.fly();
   }
 
   die() {
+    sound.play('src/sounds/hurt.wav');
     this.lives -= 1;
-
-    // console.log('YOU ARE DEAD!💀');
   }
 
   addScores() {
     this.scores += 10;
-  }
-
-  async win() {
-    console.clear();
-    console.log('YOU WIN!💰');
-    console.log(`Your score: ${this.scores}`);
-    console.log(EOL);
-    await logPlayers();
-    console.log(`${EOL}Created by "CD-Project Red" with love${EOL}`);
-    process.exit();
-  }
-
-  async lose() {
-    await addPlayers(this.name, this.scores);
-    console.clear();
-    this.skin = '💀';
-    console.log('YOU ARE DEAD!💀');
-    console.log(`Your score: ${this.scores}`);
-    console.log(EOL);
-    await logPlayers();
-    console.log(`${EOL}Created by "CD-Project Red" with love${EOL}`);
-    process.exit();
   }
 }
 
