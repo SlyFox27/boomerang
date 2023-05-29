@@ -1,12 +1,15 @@
-// Импортируем всё необходимое.
+const { draw, drawAsString } = require('terminal-img');
 const readlineSync = require('readline-sync');
-// Или можно не импортировать,
-// а передавать все нужные объекты прямо из run.js при инициализации new Game().
-
+const sound = require('play-sound')((opts = {}));
+const { EOL } = require('os');
+const logPlayers = require('../logPlayers');
+const addPlayers = require('../addPlayers');
 const Hero = require('./game-models/Hero');
 const Enemy = require('./game-models/Enemy');
 const View = require('./View');
 const Boomerang = require('./game-models/Boomerang');
+// Или можно не импортировать,
+// а передавать все нужные объекты прямо из run.js при инициализации new Game().
 
 // Основной класс игры.
 // Тут будут все настройки, проверки, запуск.
@@ -30,7 +33,9 @@ class Game {
   regenerateTrack() {
     // Сборка всего необходимого (герой, враг(и), оружие)
     // в единую структуру данных
-    this.track = new Array(this.trackLength).fill(' ');
+    this.track = new Array(this.trackLength).fill('_ ').map((el, id) => {
+      return id % 9 === 1 ? '🌲🏰🏔️' : el;
+    });
     this.track[this.hero.position] = this.hero.skin;
     this.track[this.enemy.position] = this.enemy.skin; // Добавьте эту строку
     if (
@@ -47,15 +52,20 @@ class Game {
     }
   }
 
-  play() {
+  async play() {
+    process.stdout.write('\x1Bc');
+    await draw('src/images/logo.png', { width: 80, height: 40 });
+    await draw('src/images/start.png', { width: 80, height: 40 });
+
     function registratePlayer() {
-      playerName = readlineSync.question('Hello!!! Please enter your name: ');
+      playerName = readlineSync.question('Введите ваше имя: ');
       process.stdin.resume();
 
       return playerName;
     }
 
-    this.hero.name = registratePlayer();
+    this.hero.name = await registratePlayer();
+    this.audio = sound.play('src/sounds/battle.wav');
 
     setInterval(() => {
       // Let's play!
@@ -74,25 +84,71 @@ class Game {
     }, 100); // Вы можете настроить частоту обновления игрового цикла
   }
 
+  async win() {
+    process.stdout.write('\x1Bc');
+
+    this.audio.kill();
+    sound.play('src/sounds/win.wav');
+
+    await draw('src/images/victory.png', { width: 80, height: 40 });
+    await addPlayers(this.hero.name, this.hero.scores);
+
+    console.log(`На этот раз вы победили.${EOL}Cамое время сыграть в гвинт.`);
+    console.log(`Ваш результат: ${this.hero.scores} / 100`);
+    console.log(EOL);
+
+    await logPlayers();
+
+    console.log(`${EOL}Created by "CD Projekt Red" with love${EOL}`);
+
+    process.exit();
+  }
+
+  async lose() {
+    process.stdout.write('\x1Bc');
+
+    sound.play('src/sounds/death.wav');
+    this.audio.kill();
+
+    await draw('src/images/defeat.png', { width: 80, height: 40 });
+    await addPlayers(this.hero.name, this.hero.scores);
+
+    console.log(
+      `Со смертью этого персонажа нить вашей судьбы обрывается.${EOL}Начните игру заново, чтобы восстановить течение судьбы, или живите дальше в проклятом мире, который сами и создали.${EOL}`
+    );
+    console.log(`Ваш результат: ${this.hero.scores} / 100`);
+    console.log(EOL);
+
+    await logPlayers();
+
+    console.log(`${EOL}Created by "CD Projekt Red" with love${EOL}`);
+
+    process.exit();
+  }
+
   handleCollisions() {
     if (this.hero.position === this.enemy.position) {
       this.hero.die();
 
       if (this.hero.lives <= 0) {
         this.hero.die();
-        this.hero.lose();
+        this.lose();
       }
     }
 
-    if (this.boomerang.position === this.enemy.position) {
+    if (
+      this.boomerang.position === this.enemy.position ||
+      this.boomerang.position === this.enemy.position + 1
+    ) {
       this.enemy.die();
+      this.boomerang.position = undefined;
 
       this.hero.addScores();
       if (this.hero.scores >= 100) {
-        this.hero.win();
+        this.win();
       }
       // Обнуляем позицию бумеранга после столкновения с врагом
-      this.boomerang.position = -1;
+      this.boomerang.position = this.hero.position;
       this.enemy = new Enemy(this.trackLength); // Создаем нового врага
     }
   }

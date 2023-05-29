@@ -7,10 +7,10 @@ class View {
 
   render() {
     if (!this.game.hero.name) {
-      this.game.hero.name = 'Geralt';
+      this.game.hero.name = 'Геральт';
     }
-    const userName = `Name: ${this.game.hero.name}`;
-    const scores = `Score: ${this.game.hero.scores}`;
+    const userName = `Имя: ${this.game.hero.name}`;
+    const scores = `Счёт: ${this.game.hero.scores} / 100`;
     const livesCount = this.game.hero.lives;
     const liveIcon = '🐺  ';
 
@@ -20,7 +20,7 @@ class View {
     console.log(EOL);
     console.log(userName);
     if (!(livesCount <= 0)) {
-      console.log(liveIcon.repeat(livesCount));
+      console.log(`Здоровье: ${liveIcon.repeat(livesCount)}`);
     }
 
     console.log(scores);
