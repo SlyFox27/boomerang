@@ -19,11 +19,11 @@ module.exports = {
         Score: 30,
       },
       {
-        Name: 'Boss of the Gym',
+        Name: 'Aysen Kolesov',
         Score: 10,
       },
       {
-        Name: 'Dungeon Master',
+        Name: 'Artem Berezkin',
         Score: 10,
       },
     ]);
