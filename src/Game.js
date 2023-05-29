@@ -53,6 +53,7 @@ class Game {
   }
 
   async play() {
+    process.stdout.write('\x1Bc');
     await draw('src/images/logo.png', { width: 80, height: 40 });
     await draw('src/images/start.png', { width: 80, height: 40 });
 
@@ -84,7 +85,7 @@ class Game {
   }
 
   async win() {
-    console.clear();
+    process.stdout.write('\x1Bc');
 
     this.audio.kill();
     sound.play('src/sounds/win.wav');
@@ -104,7 +105,7 @@ class Game {
   }
 
   async lose() {
-    console.clear();
+    process.stdout.write('\x1Bc');
 
     sound.play('src/sounds/death.wav');
     this.audio.kill();
